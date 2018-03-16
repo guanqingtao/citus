@@ -923,12 +923,10 @@ MultiClientRegisterWait(WaitInfo *waitInfo, TaskExecutionStatus executionStatus,
 
 	if (executionStatus == TASK_STATUS_SOCKET_READ)
 	{
-		FD_SET(connectionFileDescriptor, &(waitInfo->exceptionFileDescriptorSet));
 		FD_SET(connectionFileDescriptor, &(waitInfo->readFileDescriptorSet));
 	}
 	else if (executionStatus == TASK_STATUS_SOCKET_WRITE)
 	{
-		FD_SET(connectionFileDescriptor, &(waitInfo->exceptionFileDescriptorSet));
 		FD_SET(connectionFileDescriptor, &(waitInfo->writeFileDescriptorSet));
 	}
 #endif
