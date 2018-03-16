@@ -814,18 +814,20 @@ MultiClientCreateWaitInfo(int maxConnections)
 {
 	WaitInfo *waitInfo = palloc(sizeof(WaitInfo));
 
+#ifndef HAVE_POLL
+
 	/* we subtract 2 to make room for the WL_POSTMASTER_DEATH and WL_LATCH_SET events */
 	if (maxConnections > FD_SETSIZE - 2)
 	{
 		maxConnections = FD_SETSIZE - 2;
 	}
+#endif
 
 	waitInfo->maxWaiters = maxConnections;
 
 	/* we use poll(2) if available, otherwise select(2) */
 #ifdef HAVE_POLL
 	waitInfo->pollfds = palloc(maxConnections * sizeof(struct pollfd));
-#else /* !HAVE_POLL */
 #endif
 
 	/* initialize remaining fields */
